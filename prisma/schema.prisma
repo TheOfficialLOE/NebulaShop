@@ -17,6 +17,7 @@ model Users {
   Role           Role     @default(USER)
   CreatedAt      DateTime @default(now())
   Password       String   @db.VarChar(255)
+  BrandsByAdmins Brands[]
   PurchasedItems Purchases[]
 }
 
@@ -27,19 +28,37 @@ model Purchases {
     ProductId Int
     User      Users    @relation(fields: [UserId], references: [Id])
     UserId    Int
+    Stage     PurchaseStage @default(CART)
 }
 
 
 model Products {
-    Id          Int    @id @default(autoincrement())
-    Brand       String @db.VarChar(50)
-    Name        String @db.VarChar(200)
-    Description String @db.VarChar(1000)
-    Info        Json   @db.Json()
+    Id          Int      @id @default(autoincrement())
+    Brand       Brands   @relation(fields: [BrandName], references: [Name])
+    BrandName   String
+    Name        String   @db.VarChar(200)
+    Description String   @db.VarChar(1000)
+    Info        Json     @db.Json()
+    CreatedAt   DateTime @default(now())
     Purchases   Purchases[]
 }
 
+model Brands {
+  Name         String   @id @db.VarChar(50)
+  BrandDetails String   @db.VarChar(255)
+  CreatedAt    DateTime @default(now())
+  Admin        Users    @relation(fields: [CreatedBy], references: [Id])
+  CreatedBy    Int
+  Products     Products[]
+}
+
 enum Role {
-  USER
+  SUPER_ADMIN
   ADMIN
+  USER
+}
+
+enum PurchaseStage {
+  CART
+  PURCHASED
 }
