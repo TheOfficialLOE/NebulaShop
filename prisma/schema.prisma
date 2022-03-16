@@ -23,10 +23,10 @@ model Users {
 
 
 model Purchases {
-    Id        Int      @id @default(autoincrement())
-    Product   Products @relation(fields: [ProductId], references: [Id])
+    Id        Int           @id @default(autoincrement())
+    Product   Products      @relation(fields: [ProductId], references: [Id])
     ProductId Int
-    User      Users    @relation(fields: [UserId], references: [Id])
+    User      Users         @relation(fields: [UserId], references: [Id])
     UserId    Int
     Stage     PurchaseStage @default(CART)
 }
