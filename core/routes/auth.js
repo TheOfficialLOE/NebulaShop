@@ -24,7 +24,7 @@ router.post("/register", [admin, validate(validator.registration)], async (req, 
             IsAdmin: data.Role === "ADMIN"
         }, config.get("jwtPrivateKey"));
 
-        return res.header("x-auth-token", token).send("User Created!");
+        return res.header("x-auth-token", token).send("User created!");
 
     }).catch(err => {
         if (err.code === "P2002")
@@ -34,8 +34,32 @@ router.post("/register", [admin, validate(validator.registration)], async (req, 
 
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", validate(validator.login), async (req, res) => {
 
+    await prisma.users.findUnique({
+        where: {
+            Email: req.body.Email
+        }
+    }).then(data => {
+        if (data !== null) {
+
+            const validPass = bcrypt.compare(req.body.Password, data.Password);
+            if (!validPass) return res.status(400).send("User not found...");
+
+            const token = jwt.sign({
+                Email: data.Email,
+                IsAdmin: data.Role === "ADMIN"
+            }, config.get("jwtPrivateKey"));
+
+            return res.header("x-auth-token", token).send("Logged in!");
+
+        }
+        else {
+            return res.status(400).send("User not found...")
+        }
+    }).catch(err => {
+        return res.status(400).send(err);
+    });
 });
 
 

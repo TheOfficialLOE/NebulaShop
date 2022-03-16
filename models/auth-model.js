@@ -9,7 +9,11 @@ module.exports = {
         });
         return schema.validate(user);
     },
-    login: {
-
+    login: user => {
+        const schema = Joi.object({
+            Email: Joi.string().min(5).max(100).required().email(),
+            Password: Joi.string().min(5).max(20).required()
+        });
+        return schema.validate(user);
     }
 };
