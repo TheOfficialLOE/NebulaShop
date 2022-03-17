@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Users {
-  Id             Int      @id @default(autoincrement())
-  Email          String   @db.VarChar(100) @unique
-  Name           String?  @db.VarChar(100)
-  Role           Role     @default(USER)
-  CreatedAt      DateTime @default(now())
-  Password       String   @db.VarChar(255)
-  BrandsByAdmins Brands[]
-  PurchasedItems Purchases[]
+  Id               Int      @id @default(autoincrement())
+  Email            String   @db.VarChar(100) @unique
+  Name             String?  @db.VarChar(100)
+  Role             Role     @default(USER)
+  CreatedAt        DateTime @default(now())
+  Password         String   @db.VarChar(255)
+  ProductsByAdmins Products[]
+  BrandsByAdmins   Brands[]
+  PurchasedItems   Purchases[]
 }
 
 
@@ -41,6 +42,8 @@ model Products {
     Info        Json     @db.Json()
     Remaining   Int
     CreatedAt   DateTime @default(now())
+    Admin       Users    @relation(fields: [CreatedBy], references: [Email])
+    CreatedBy   String
     Purchases   Purchases[]
 }
 
@@ -48,8 +51,8 @@ model Brands {
   Name         String   @id @db.VarChar(50)
   BrandDetails String   @db.VarChar(255)
   CreatedAt    DateTime @default(now())
-  Admin        Users    @relation(fields: [CreatedBy], references: [Id])
-  CreatedBy    Int
+  Admin        Users    @relation(fields: [CreatedBy], references: [Email])
+  CreatedBy    String
   Products     Products[]
 }
 
