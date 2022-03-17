@@ -39,6 +39,7 @@ model Products {
     Name        String   @db.VarChar(200)
     Description String   @db.VarChar(1000)
     Info        Json     @db.Json()
+    Remaining   Int
     CreatedAt   DateTime @default(now())
     Purchases   Purchases[]
 }

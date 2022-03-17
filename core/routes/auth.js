@@ -10,7 +10,6 @@ const validate = require("../../middleware/joi-validator");
 const admin = require("../../middleware/admin-validator");
 
 router.post("/register", [admin, validate(validator.registration)], async (req, res) => {
-
     await prisma.users.create({
         data: {
             Email: req.body.Email,
@@ -20,8 +19,8 @@ router.post("/register", [admin, validate(validator.registration)], async (req, 
     }).then(data => {
 
         const token = jwt.sign({
-            Email: data.Email,
-            IsAdmin: data.Role === "ADMIN"
+            email: data.Email,
+            role: data.Role
         }, config.get("jwtPrivateKey"));
 
         return res.header("x-auth-token", token).send("User created!");
@@ -47,8 +46,8 @@ router.post("/login", validate(validator.login), async (req, res) => {
             if (!validPass) return res.status(400).send("User not found...");
 
             const token = jwt.sign({
-                Email: data.Email,
-                IsAdmin: data.Role === "ADMIN"
+                email: data.Email,
+                role: data.Role
             }, config.get("jwtPrivateKey"));
 
             return res.header("x-auth-token", token).send("Logged in!");

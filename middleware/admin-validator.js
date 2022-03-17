@@ -10,11 +10,11 @@ module.exports = (req, res, next) => {
     try {
 
         const verified = jwt.verify(token, config.get("jwtPrivateKey"));
-        if (verified.isSuperAdmin) {
+        if (verified.role === "SUPER_ADMIN") {
             req.isSuperAdmin = true
             return next();
         }
-        else if (verified.isAdmin) {
+        else if (verified.role === "ADMIN") {
             req.isAdmin = true
             return next();
         }
