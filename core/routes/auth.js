@@ -62,4 +62,4 @@ router.post("/login", validate(validator.login), async (req, res) => {
 });
 
 
-module.exports = router
+module.exports = router;
