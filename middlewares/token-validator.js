@@ -47,3 +47,20 @@ exports.cms = (req, res, next) => {
     }
 
 }
+
+exports.hasToken = (req, res, next) => {
+
+    const token = req.header("x-auth-token");
+    if (!token) return res.status(403).json("You have to login first...");
+
+    try {
+
+        const verified = jwt.verify(token, config.get("jwtPrivateKey"));
+        req.email = verified.email;
+        return next();
+
+    }catch (e) {
+        return res.status(400).json("Invalid token...");
+    }
+
+};

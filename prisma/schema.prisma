@@ -27,8 +27,9 @@ model Purchases {
     Id        Int           @id @default(autoincrement())
     Product   Products      @relation(fields: [ProductId], references: [Id])
     ProductId Int
-    User      Users         @relation(fields: [UserId], references: [Id])
-    UserId    Int
+    User      Users         @relation(fields: [UserEmail], references: [Email])
+    UserEmail String
+    Count     Int           @default(1)
     Stage     PurchaseStage @default(CART)
 }
 
@@ -41,6 +42,7 @@ model Products {
     Description String   @db.VarChar(1000)
     Info        Json     @db.Json()
     Remaining   Int
+    Price       Int
     CreatedAt   DateTime @default(now())
     Admin       Users    @relation(fields: [CreatedBy], references: [Email])
     CreatedBy   String

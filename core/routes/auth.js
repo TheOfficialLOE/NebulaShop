@@ -6,8 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const validator = require("../../models/auth-model");
-const validate = require("../../middleware/joi-validator");
-const { registerAdmin } = require("../../middleware/token-validator");
+const validate = require("../../middlewares/joi-validator");
+const { registerAdmin } = require("../../middlewares/token-validator");
 
 router.post("/register", [registerAdmin, validate(validator.registration)], async (req, res) => {
     await prisma.users.create({

@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { cms } = require("../../middleware/token-validator");
-const valid = require("../../middleware/joi-validator");
+const { cms } = require("../../middlewares/token-validator");
+const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/products-model");
 
 // We'll manage products CRUD operations here...
@@ -18,6 +18,7 @@ router.post("/newProduct", [cms, valid(validator.product)], async (req, res) => 
             BrandName: req.body.Brand,
             Remaining: req.body.Remaining,
             CreatedBy: req.email,
+            Price: req.body.Price
         },
         include: {
             Purchases: true
@@ -52,6 +53,8 @@ router.post("/newBrand", [cms, valid(validator.brand)], async (req, res) => {
     }).catch(err => {
         if (err.code === "P2002")
             return res.status(400).json("Brand already exists...");
+        else if (err.code === "P2003")
+            return res.status(403).json("User not found...")
         return res.status(400).json("Error occurred...");
     });
 });

@@ -8,7 +8,8 @@ module.exports = {
             Name: Joi.string().min(10).max(200).required(),
             Description: Joi.string().min(10).max(1000).required(),
             Info: Joi.object().required(),
-            Remaining: Joi.number().min(0).required()
+            Remaining: Joi.number().min(0).required(),
+            Price: Joi.number().min(0).required()
         });
         return schema.validate(product);
     },
