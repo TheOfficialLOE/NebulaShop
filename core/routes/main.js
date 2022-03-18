@@ -17,4 +17,22 @@ router.get("/", async (req, res) => {
     });
 });
 
+router.get("/:brand", async (req, res) => {
+
+    await prisma.products.findMany({
+      where: {
+          BrandName: req.params.brand
+      },
+        select: {
+          BrandName: true,
+            Name: true
+        }
+   }).then(data => {
+       return res.json(data);
+    }).catch(err => {
+        return res.status(400).json(err);
+    });
+
+});
+
 module.exports = router;
