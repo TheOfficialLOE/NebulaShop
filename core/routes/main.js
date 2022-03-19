@@ -35,4 +35,28 @@ router.get("/:brand", async (req, res) => {
 
 });
 
+router.get("/:brand/:product", async (req, res) => {
+
+    await prisma.products.findFirst({
+       where: {
+           BrandName: req.params.brand,
+           Id: Number(req.params.product)
+       },
+        select: {
+           BrandName: true,
+            Name: true,
+            Description: true,
+            Info: true,
+            Price: true
+        }
+    }).then(data => {
+        return res.json(data);
+    }).catch(err => {
+        console.log(err);
+        return res.status(400).json(err);
+    });
+
+
+});
+
 module.exports = router;
