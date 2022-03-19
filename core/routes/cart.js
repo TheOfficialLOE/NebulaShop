@@ -5,37 +5,36 @@ const prisma = new PrismaClient();
 const { hasToken } = require("../../middlewares/token-validator");
 const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/cart-model");
+const { findMany, create } = require("../../utilities/query-builder");
 
 router.get("/", hasToken, async (req, res) => {
 
-    await prisma.cart.findMany({
-       where: {
-           UserEmail: req.email
-       }
-    }).then(data => {
-        return res.json(data);
-    }).catch(err => {
-        return res.status(400).json(err);
+    const cart = await findMany(prisma.cart, {
+        UserEmail: req.email
     });
+
+    if (cart.success)
+        return res.json(cart);
+    else
+        return res.status(400).json("Error occurred...");
+
 });
 
 router.post("/add", [hasToken, valid(validator)], async (req, res) => {
 
     // todo: don't let the user to add multiple same product to the cart
 
-    await prisma.cart.create({
-        data: {
-            UserEmail: req.email,
-            ProductId: req.body.ProductId,
-            Count: req.body.Count
-        }
-    }).then(data => {
-        return res.json(data);
-    }).catch(err => {
-        if (err.code === "P2003")
-            return res.status(400).json("Product not found...")
-       return res.status(400).json("Error occurred...");
+    const item = await create(prisma.cart, {
+        UserEmail: req.email,
+        ProductId: req.body.ProductId,
+        Count: req.body.Count
     });
+
+    if (item.success)
+        return res.json(item);
+    else
+        return res.status(400).json("Error occurred...");
+
 });
 
 
