@@ -19,18 +19,28 @@ model Users {
   Password         String   @db.VarChar(255)
   ProductsByAdmins Products[]
   BrandsByAdmins   Brands[]
-  PurchasedItems   Purchases[]
+  UserCart         Cart[]
+  UserPurchases    Purchases[]
 }
 
 
-model Purchases {
+model Cart {
     Id        Int           @id @default(autoincrement())
     Product   Products      @relation(fields: [ProductId], references: [Id])
     ProductId Int
     User      Users         @relation(fields: [UserEmail], references: [Email])
     UserEmail String
     Count     Int           @default(1)
-    Stage     PurchaseStage @default(CART)
+}
+
+model Purchases {
+  Id        Int      @id @default(autoincrement())
+  Product   Products @relation(fields: [ProductId], references: [Id])
+  ProductId Int
+  User      Users    @relation(fields: [UserEmail], references: [Email])
+  UserEmail String
+  Count     Int      @default(1)
+  Address   String
 }
 
 
@@ -46,8 +56,10 @@ model Products {
     CreatedAt   DateTime @default(now())
     Admin       Users    @relation(fields: [CreatedBy], references: [Email])
     CreatedBy   String
+    Cart        Cart[]
     Purchases   Purchases[]
 }
+
 
 model Brands {
   Name         String   @id @db.VarChar(50)
@@ -62,9 +74,4 @@ enum Role {
   SUPER_ADMIN
   ADMIN
   USER
-}
-
-enum PurchaseStage {
-  CART
-  PURCHASED
 }
