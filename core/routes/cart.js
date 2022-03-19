@@ -32,7 +32,9 @@ router.post("/add", [hasToken, valid(validator)], async (req, res) => {
     }).then(data => {
         return res.json(data);
     }).catch(err => {
-       return res.status(400).json(err);
+        if (err.code === "P2003")
+            return res.status(400).json("Product not found...")
+       return res.status(400).json("Error occurred...");
     });
 });
 
