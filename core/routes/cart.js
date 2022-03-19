@@ -7,7 +7,8 @@ const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/cart-model");
 
 router.get("/", hasToken, async (req, res) => {
-    await prisma.purchases.findMany({
+
+    await prisma.cart.findMany({
        where: {
            UserEmail: req.email
        }
@@ -19,7 +20,10 @@ router.get("/", hasToken, async (req, res) => {
 });
 
 router.post("/add", [hasToken, valid(validator)], async (req, res) => {
-    await prisma.purchases.create({
+
+    // todo: don't let the user to add multiple same product to the cart
+
+    await prisma.cart.create({
         data: {
             UserEmail: req.email,
             ProductId: req.body.ProductId,
