@@ -1,0 +1,17 @@
+-- CreateTable
+CREATE TABLE `Comments` (
+    `Id` INTEGER NOT NULL AUTO_INCREMENT,
+    `ProductId` INTEGER NOT NULL,
+    `UserEmail` VARCHAR(191) NOT NULL,
+    `Date` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `Text` VARCHAR(1000) NOT NULL,
+    `Likes` INTEGER NOT NULL DEFAULT 0,
+
+    PRIMARY KEY (`Id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Comments` ADD CONSTRAINT `Comments_UserEmail_fkey` FOREIGN KEY (`UserEmail`) REFERENCES `Users`(`Email`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Comments` ADD CONSTRAINT `Comments_ProductId_fkey` FOREIGN KEY (`ProductId`) REFERENCES `Products`(`Id`) ON DELETE RESTRICT ON UPDATE CASCADE;

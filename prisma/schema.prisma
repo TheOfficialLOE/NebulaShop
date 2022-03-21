@@ -21,6 +21,7 @@ model Users {
   BrandsByAdmins   Brands[]
   UserCart         Cart[]
   UserPurchases    Purchases[]
+  Comments         Comments[]
 }
 
 
@@ -58,6 +59,7 @@ model Products {
     CreatedBy   String
     Cart        Cart[]
     Purchases   Purchases[]
+    Comments    Comments[]
 }
 
 
@@ -68,6 +70,17 @@ model Brands {
   Admin        Users    @relation(fields: [CreatedBy], references: [Email])
   CreatedBy    String
   Products     Products[]
+}
+
+model Comments {
+  Id        Int      @id @default(autoincrement())
+  Product   Products @relation(fields: [ProductId], references: [Id])
+  ProductId Int
+  User      Users    @relation(fields: [UserEmail], references: [Email])
+  UserEmail String
+  Date      DateTime @default(now())
+  Text      String   @db.VarChar(1000)
+  Likes     Int      @default(0)
 }
 
 enum Role {
