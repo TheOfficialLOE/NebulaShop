@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `comments` ADD COLUMN `Dislikes` INTEGER NOT NULL DEFAULT 0;

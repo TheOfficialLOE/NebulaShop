@@ -22,6 +22,7 @@ model Users {
   UserCart         Cart[]
   UserPurchases    Purchases[]
   Comments         Comments[]
+  Votes            Votes[]
 }
 
 
@@ -60,6 +61,7 @@ model Products {
     Cart        Cart[]
     Purchases   Purchases[]
     Comments    Comments[]
+    Votes       Votes[]
 }
 
 
@@ -80,11 +82,27 @@ model Comments {
   UserEmail String
   Date      DateTime @default(now())
   Text      String   @db.VarChar(1000)
-  Likes     Int      @default(0)
+  Votes     Votes[]
+}
+
+model Votes {
+  Id        Int      @id @default(autoincrement())
+  User      Users    @relation(fields: [UserEmail], references: [Email])
+  UserEmail String
+  Products  Products @relation(fields: [ProductId], references: [Id])
+  ProductId Int
+  Comment   Comments @relation(fields: [CommentId], references: [Id])
+  CommentId Int
+  Type      VoteType
 }
 
 enum Role {
   SUPER_ADMIN
   ADMIN
   USER
+}
+
+enum VoteType {
+  LIKE
+  DISLIKE
 }
