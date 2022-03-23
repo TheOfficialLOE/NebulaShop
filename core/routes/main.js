@@ -47,7 +47,13 @@ router.get("/:brand/:product", async (req, res) => {
         Name: true,
         Description: true,
         Info: true,
-        Price: true
+        Price: true,
+        Comments: {
+          select: {
+              UserEmail: true,
+              Text: true
+          }
+        }
     });
 
     if (product.success)
