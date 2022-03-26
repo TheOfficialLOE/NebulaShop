@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { PrismaClient } = require("@prisma/client");
+const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
 const { hasToken } = require("../../middlewares/token-validator");
 const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/cart-model");
-const { findMany, create } = require("../../utilities/query-builder");
+const { findMany, findFirst, create, updateMany } = require("../../utilities/query-builder");
 
 router.get("/", hasToken, async (req, res) => {
 
@@ -22,18 +22,56 @@ router.get("/", hasToken, async (req, res) => {
 
 router.post("/add", [hasToken, valid(validator)], async (req, res) => {
 
-    // todo: don't let the user to add multiple same product to the cart
-
-    const item = await create(prisma.cart, {
+    const cart = await findFirst(prisma.cart, {
         UserEmail: req.email,
-        ProductId: req.body.ProductId,
-        Count: req.body.Count
+        ProductId: req.body.ProductId
     });
 
-    if (item.success)
-        return res.json(item);
-    else
-        return res.status(400).json("Error occurred...");
+
+    switch (cart.success) {
+        case false: {
+            return res.status(400).json("Error occurred...");
+        }
+        case true: {
+            switch (cart.data) {
+                case null: {
+                    const item = await create(prisma.cart, {
+                        UserEmail: req.email,
+                        ProductId: req.body.ProductId,
+                        Count: req.body.Count
+                    });
+
+                    if (item.success === false) {
+                        if (item.data.code === "P2003")
+                            return res.status(400).json("Product not found...")
+                        else
+                            return res.status(400).json("Error occurred...");
+                    } else {
+                        return res.json("Added an Item...");
+                    }
+                }
+
+                default: {
+                    const updatedItem = await updateMany(prisma.cart, {
+                        UserEmail: req.email,
+                        ProductId: req.body.ProductId
+                    }, {
+                        Count: {
+                            increment: req.body.Count
+                        }
+                    });
+
+                    if (updatedItem.success)
+                        return res.json("Updated an item...");
+                    else
+                        return res.status(400).json("Error occurred...");
+                }
+
+
+            }
+
+        }
+    }
 
 });
 
