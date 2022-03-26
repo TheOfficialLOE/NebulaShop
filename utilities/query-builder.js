@@ -55,3 +55,14 @@ module.exports.create = async (prisma, data, include = null) => {
 
 };
 
+module.exports.updateMany = async (prisma, where, data) => {
+    return await prisma.updateMany({
+        where,
+        data
+    }).then(data => {
+        return generateResponse(true, data);
+    }).catch(err => {
+       return generateResponse(false, err);
+    });
+};
+
