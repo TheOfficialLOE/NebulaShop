@@ -25,19 +25,22 @@ router.get("/:brand", async (req, res) => {
         BrandName: req.params.brand
     }, {
         BrandName: true,
-        Name: true
+        Name: true,
+        Price: true
     });
 
-    if (products.success)
-        return res.json(products);
+    if (products.success) {
+        if (products.data.length !== 0)
+            return res.json(products);
+        else
+            return res.status(400).json("Brand not found...")
+    }
     else
         return res.status(400).json("Error occurred...");
-
 
 });
 
 router.get("/:brand/:product", async (req, res) => {
-
 
     const product = await findFirst(prisma.products, {
         Id: Number(req.params.product),
@@ -51,7 +54,13 @@ router.get("/:brand/:product", async (req, res) => {
         Comments: {
           select: {
               UserEmail: true,
-              Text: true
+              Text: true,
+              Votes: {
+                  select: {
+                      UserEmail: true,
+                      Type: true
+                  }
+              }
           }
         }
     });
