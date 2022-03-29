@@ -5,6 +5,8 @@ const prisma = new PrismaClient();
 const { findMany, findFirst } = require("../../utilities/query-builder");
 
 // todo: Add discount for products
+// todo: check existence of user in token validators
+// todo: add admin checker middlewares in startup routes
 
 router.get("/", async (req, res) => {
 
