@@ -21,8 +21,8 @@ router.post("/register", [registerAdmin, validate(validator.registration)], asyn
 
     if (user.success) {
         const token = await jwt.sign({
-            email: user.Email,
-            role: user.Role
+            email: user.data.Email,
+            role: user.data.Role
         }, config.get("jwtPrivateKey"));
 
         return res.header("x-auth-token", token).json("User created!");
