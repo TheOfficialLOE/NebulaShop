@@ -61,7 +61,6 @@ model Products {
     Cart        Cart[]
     Purchases   Purchases[]
     Comments    Comments[]
-    Votes       Votes[]
 }
 
 
@@ -82,15 +81,13 @@ model Comments {
   UserEmail String
   Date      DateTime @default(now())
   Text      String   @db.VarChar(1000)
-  Votes     Votes[]
+  Votes     Votes?
 }
 
 model Votes {
   Id        Int      @id @default(autoincrement())
   User      Users    @relation(fields: [UserEmail], references: [Email])
   UserEmail String
-  Products  Products @relation(fields: [ProductId], references: [Id])
-  ProductId Int
   Comment   Comments @relation(fields: [CommentId], references: [Id])
   CommentId Int
   Type      VoteType

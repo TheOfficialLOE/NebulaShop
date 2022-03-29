@@ -4,6 +4,7 @@ const { PrismaClient }= require("@prisma/client");
 const prisma = new PrismaClient();
 const { findMany, findFirst } = require("../../utilities/query-builder");
 
+// todo: Add discount for products
 
 router.get("/", async (req, res) => {
 
