@@ -27,8 +27,11 @@ router.post("/register", [registerAdmin, validate(validator.registration)], asyn
 
         return res.header("x-auth-token", token).json("User created!");
     }
-    else
-        return res.status(400).json(user);
+    else {
+        if (user.data.code === "P2002")
+            return res.status(400).json("User already exists...");
+        return res.status(400).json("Error occurred...");
+    }
 
 });
 

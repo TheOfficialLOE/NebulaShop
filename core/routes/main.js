@@ -6,7 +6,6 @@ const { findMany, findFirst } = require("../../utilities/query-builder");
 
 // todo: Add discount for products
 // todo: add admin checker middlewares in startup routes
-// todo: fix registration error response when user exists
 
 router.get("/", async (req, res) => {
 
