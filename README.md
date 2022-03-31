@@ -3,14 +3,14 @@
 Using this API you can basically fit any kind of product to sell, that's how it's designed to work.
 <br/>
 
-**Features:**
-<br/>
+## Features
+
 * Powered by Prisma ORM
 * Async operations
 * Clean code
 
-**Workflow:**
-<br/>
+## Workflow
+
 Routes under _core_ directory handle the primary features:
 <br/>
 * [Authentication](core/routes/auth.js)
@@ -26,5 +26,5 @@ Routes under _cms_ directory handle Admin Panel operations( only admins and supe
 * [Add new product](cms/routes/products.js)
 
 
-P.S:More features will be added to CMS soon...
+### More features will be added to CMS soon...
 
