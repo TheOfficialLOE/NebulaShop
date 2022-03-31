@@ -9,7 +9,7 @@ Using this API you can basically fit any kind of product to sell, that's how it'
 * Async operations
 * Clean code
 
-**Workflow**
+**Workflow:**
 <br/>
 Routes under _core_ directory handle the primary features:
 <br/>
@@ -24,3 +24,6 @@ Routes under _cms_ directory handle Admin Panel operations( only admins and supe
 <br/>
 * [Add new brand](cms/routes/products.js)
 * [Add new product](cms/routes/products.js)
+<br/>
+More features will be added to this part soon...
+
