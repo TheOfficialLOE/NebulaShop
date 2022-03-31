@@ -5,10 +5,8 @@ const prisma = new PrismaClient();
 const { findMany, findFirst } = require("../../utilities/query-builder");
 
 // todo: Add discount for products
-// todo: check existence of user in token validators
 // todo: add admin checker middlewares in startup routes
 // todo: fix registration error response when user exists
-// todo: add search
 
 router.get("/", async (req, res) => {
 
@@ -21,6 +19,37 @@ router.get("/", async (req, res) => {
         return res.json(products);
     else
         return res.status(400).json("Error occurred...");
+
+});
+
+router.get("/search", async (req, res) => {
+
+    if (req.query.query === undefined)
+        return res.status(400).json("Please enter a search query....");
+
+
+    const items = await findMany(prisma.products, {
+        Name: {
+            contains: req.query.query
+        },
+        BrandName: {
+            contains: req.body.Brand || undefined
+        },
+        Price: {
+            gte: req.body.MinPrice || undefined,
+            lte: req.body.MaxPrice || undefined
+        }
+    }, {
+        BrandName: true,
+        Name: true,
+        Price: true,
+    });
+
+    if (items.success)
+        return res.json(items);
+    else
+        return res.status(400).json("Error occurred...");
+
 
 });
 
