@@ -18,7 +18,7 @@ Routes under _core_ directory handle the primary features:
 * [Comment on products](https://github.com/TheOfficialLOE/NebulaShop#comment-on-products)
 * [Vote comments( Like & Dislike )](https://github.com/TheOfficialLOE/NebulaShop#vote-comments)
 * [Add to cart](https://github.com/TheOfficialLOE/NebulaShop#add-to-cart)
-* [Purchase products](https://github.com/TheOfficialLOE/NebulaShop#purchase-product)
+* [Purchase products](https://github.com/TheOfficialLOE/NebulaShop#purchase-products)
 
 Routes under _cms_ directory handle Admin Panel operations( only admins and super admins have access to this part ):
 <br/>
