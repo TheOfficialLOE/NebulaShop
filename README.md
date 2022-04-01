@@ -18,7 +18,7 @@ Routes under _core_ directory handle the primary features:
 * [Comment on products](https://github.com/TheOfficialLOE/NebulaShop#comment-on-products)
 * [Vote comments( Like & Dislike )](https://github.com/TheOfficialLOE/NebulaShop#vote-comments)
 * [Add to cart](https://github.com/TheOfficialLOE/NebulaShop#add-to-cart)
-* [Purchase products](core/routes/purchases.js)
+* [Purchase products](https://github.com/TheOfficialLOE/NebulaShop#purchase-product)
 
 Routes under _cms_ directory handle Admin Panel operations( only admins and super admins have access to this part ):
 <br/>
@@ -45,4 +45,9 @@ In order to comment on a product, you can send a POST request to `/comments/new/
 You can like or dislike a comment in `/vote/:product/:comment` and a `type` query to determine whether you are going to like it or dislike it.
 
 ### Add to cart
-If logged in, you can get your cart items in `/cart/`. In order to add items, you need to provide `ProductId` and `Count` in the request body. One thing to consider is that you can not have repeated items in cart, if you add an item which is already added in you cart, only the count will be updated.
+If logged in, you can get your cart items in `/cart/`. In order to add items, you need to provide `ProductId` and `Count` in the request body in `/cart/add/`. One thing to consider is that you can not have repeated items in cart, if you add an item which is already added in you cart, only the count will be updated.
+
+### Purchase products
+You can visit your purchase history in `/purchase/`, and to purchase a new item you can go to `/purchase/buy/` and provide `ProductId`, `Count`, and `Address` in the request body.
+<br/>
+P.S: Apparently I forgot to change the Remaining field in the database after a purchase, and I also forgot to modify the cart after a purchase.
