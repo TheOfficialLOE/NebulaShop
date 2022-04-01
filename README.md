@@ -22,8 +22,8 @@ Routes under _core_ directory handle the primary features:
 
 Routes under _cms_ directory handle Admin Panel operations( only admins and super admins have access to this part ):
 <br/>
-* [Add new brand](cms/routes/products.js)
-* [Add new product](cms/routes/products.js)
+* [Add new brand](https://github.com/TheOfficialLOE/NebulaShop#add-new-brand)
+* [Add new product](https://github.com/TheOfficialLOE/NebulaShop#add-new-product)
 
 
 ### More features will be added to CMS soon...
@@ -50,4 +50,12 @@ If logged in, you can get your cart items in `/cart/`. In order to add items, yo
 ### Purchase products
 You can visit your purchase history in `/purchase/`, and to purchase a new item you can go to `/purchase/buy/` and provide `ProductId`, `Count`, and `Address` in the request body.
 <br/>
-P.S: Apparently I forgot to change the Remaining field in the database after a purchase, and I also forgot to modify the cart after a purchase.
+P.S: Apparently I forgot to change the Remaining field in the database after a purchase, and I also forgot to modify the cart after a purchase( they will be added soon ).
+
+### Add new brand
+By having admin privileges, you can create a new brand in `/cms/newBrand/` providing `Name` and `Details`.
+
+### Add new product
+By having admin privileges again, and an existing brand to constraint, you can create new products in `/cms/newProduct/` providing `Brand`, `Name`, `Description`, `Info`, `Remaining`, and `Price`.
+<br/>
+Notice: `Info` field is just a json field, because each product may be different from others.
