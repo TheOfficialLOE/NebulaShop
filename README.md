@@ -14,7 +14,7 @@ Using this API you can basically fit any kind of product to sell, that's how it'
 Routes under _core_ directory handle the primary features:
 <br/>
 * [Authentication](https://github.com/TheOfficialLOE/NebulaShop#authentication)
-* [Finding products](core/routes/main.js)
+* [Finding products](https://github.com/TheOfficialLOE/NebulaShop#finding-products)
 * [Comment on products](core/routes/comments.js)
 * [Vote comments( Like & Dislike )](core/routes/vote.js)
 * [Add products to cart](core/routes/cart.js)
@@ -31,6 +31,9 @@ Routes under _cms_ directory handle Admin Panel operations( only admins and supe
 ## Workflow
 
 ### Authentication 
-Authentication is pretty handy & simple, `auth/register` and `auth/login` are responsible for it. Once user is either registered or logged in, our system will generate a JWT in `x-auth-token` header.
+Authentication is pretty handy & simple, `/auth/register` and `/auth/login` are responsible for it, both methods require `Email` and `Password` in the request body. Once user is either registered or logged in, our system will generate a JWT in `x-auth-token` header.
 <br/>
 In order to register an admin user, you need to provide an acceptable JWT in `x-admin-token` with `SUPER_ADMIN` privileges.
+
+### Finding products
+There are basically 4 methods to find the products, you can get them all by `/products/`, get a group of products with the same brand by `/products:brand/`, or get a specific product by `/products/:brand/:product/`, and finally search a product by `/products/search/` with a query. You can filter your search result by brand, minimum price, and maximum price.
