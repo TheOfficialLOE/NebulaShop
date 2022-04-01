@@ -15,7 +15,7 @@ Routes under _core_ directory handle the primary features:
 <br/>
 * [Authentication](https://github.com/TheOfficialLOE/NebulaShop#authentication)
 * [Finding products](https://github.com/TheOfficialLOE/NebulaShop#finding-products)
-* [Comment on products](core/routes/comments.js)
+* [Comment on products](https://github.com/TheOfficialLOE/NebulaShop#comment-on-products)
 * [Vote comments( Like & Dislike )](core/routes/vote.js)
 * [Add products to cart](core/routes/cart.js)
 * [Purchase products](core/routes/purchases.js)
@@ -36,4 +36,7 @@ Authentication is pretty handy & simple, `/auth/register` and `/auth/login` are 
 In order to register an admin user, you need to provide an acceptable JWT in `x-admin-token` with `SUPER_ADMIN` privileges.
 
 ### Finding products
-There are basically 4 methods to find the products, you can get them all by `/products/`, get a group of products with the same brand by `/products:brand/`, or get a specific product by `/products/:brand/:product/`, and finally search a product by `/products/search/` with a query. You can filter your search result by brand, minimum price, and maximum price.
+There are basically 4 methods to find the products, you can get them all by `/products/`, get a group of products with the same brand by `/products:brand/`, or get a specific product by `/products/:brand/:product/`, and finally search products by `/products/search/` with a query. You can filter your search result by brand, minimum price, and maximum price.
+
+### Comment on products
+In order to comment on a product, you can send a POST request to `/comments/new/`, you will need `ProductId` and `Text` in the request body.
