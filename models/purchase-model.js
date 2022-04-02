@@ -6,5 +6,8 @@ module.exports = item => {
         Count: Joi.number().min(1).required(),
         Address: Joi.string().min(10).max(255).required()
     });
-    return schema.validate(item);
+
+    const schemas = Joi.array().items(schema);
+
+    return schemas.validate(item);
 }

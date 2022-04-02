@@ -6,36 +6,31 @@ const _ = require("lodash");
 const { hasToken } = require("../../middlewares/token-validator");
 const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/purchase-model");
-const { findMany, create, update } = require("../../utilities/query-builder");
+const { findMany, createMany, update } = require("../../utilities/query-builder");
 
 router.post("/buy", [hasToken, valid(validator)], async (req, res) => {
 
-    const purchase = await create(prisma.purchases, {
-        ProductId: req.body.ProductId,
-        UserEmail: req.email,
-        Count: req.body.Count,
-        Address: req.body.Address
-    });
+    const order = _.map(req.body, element => _.extend({ UserEmail: req.email }, element));
+    const dbUpdate = _.map(req.body, element => ({ Id: element.ProductId, Count: element.Count }));
+    const purchase = await createMany(prisma.purchases, order);
 
     if (purchase.success) {
 
-
-        const changedRemaining = await update(prisma.products, {
-            Id: req.body.ProductId
-        }, {
-            Remaining: {
-                decrement: req.body.Count
-            }
+        await Promise.all(
+            dbUpdate.map(async info => {
+                await update(prisma.products, {
+                    Id: info.Id
+                }, {
+                    Remaining: {
+                        decrement: info.Count
+                    }
+                });
+            })
+        ).then(data => {
+            return res.json("Purchase completed...");
+        }).catch(err => {
+           return res.status(400).json("Error occurred...");
         });
-
-        if (changedRemaining.success){
-            purchase.data = _.pick(purchase.data, ["ProductId", "UserEmail", "Count", "Address"])
-            return res.json(purchase);
-        }
-        else {
-            return res.status(400).json("Error occurred...");
-        }
-
 
     } else {
         if (purchase.data.code === "P2003")

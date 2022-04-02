@@ -52,8 +52,19 @@ module.exports.create = async (prisma, data, include = null) => {
         return generateResponse(false, err);
     });
 
-
 };
+
+module.exports.createMany = async (prisma, data) => {
+
+    return await prisma.createMany({
+        data
+    }).then(data => {
+        return generateResponse(true, data);
+    }).catch(err => {
+        return generateResponse(false, err);
+    });
+
+}
 
 module.exports.update = async (prisma, where, data) => {
     return await prisma.update({
