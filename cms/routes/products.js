@@ -49,9 +49,9 @@ router.post("/newBrand", [cms, valid(validator.brand)], async (req, res) => {
     if (brand.success)
         return res.json(brand);
     else {
-        if (brand.code === "P2002")
+        if (brand.data.code === "P2002")
             return res.status(400).json("Brand already exists...");
-        else if (brand.code === "P2003")
+        else if (brand.data.code === "P2003")
             return res.status(403).json("User not found...");
         return res.status(400).json("Error occurred...");
     }
