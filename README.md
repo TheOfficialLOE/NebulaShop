@@ -49,8 +49,6 @@ If logged in, you can get your cart items in `/cart/`. In order to add items, yo
 
 ### Purchase products
 You can visit your purchase history in `/purchase/`, and to purchase a new item you can go to `/purchase/buy/` and provide `ProductId`, `Count`, and `Address` in the request body.
-<br/>
-P.S: ~~Apparently I forgot to change the Remaining field in the database after a purchase, and I also forgot to modify the cart after a purchase( they will be added soon ).~~ Done.
 
 ### Add new brand
 By having admin privileges, you can create a new brand in `/cms/newBrand/` providing `Name` and `Details`.
