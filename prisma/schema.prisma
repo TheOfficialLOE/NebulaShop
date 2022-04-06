@@ -28,18 +28,18 @@ model Users {
 
 model Cart {
     Id        Int           @id @default(autoincrement())
-    Product   Products      @relation(fields: [ProductId], references: [Id])
+    Product   Products      @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
     ProductId Int
-    User      Users         @relation(fields: [UserEmail], references: [Email])
+    User      Users         @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
     UserEmail String
     Count     Int           @default(1)
 }
 
 model Purchases {
   Id        Int      @id @default(autoincrement())
-  Product   Products @relation(fields: [ProductId], references: [Id])
+  Product   Products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
   ProductId Int
-  User      Users    @relation(fields: [UserEmail], references: [Email])
+  User      Users    @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
   UserEmail String
   Count     Int      @default(1)
   Address   String   @db.VarChar(255)
@@ -48,7 +48,7 @@ model Purchases {
 
 model Products {
     Id          Int      @id @default(autoincrement())
-    Brand       Brands   @relation(fields: [BrandName], references: [Name])
+    Brand       Brands   @relation(fields: [BrandName], references: [Name], onDelete: Cascade, onUpdate: Cascade)
     BrandName   String
     Name        String   @db.VarChar(200)
     Description String   @db.VarChar(1000)
@@ -56,7 +56,7 @@ model Products {
     Remaining   Int
     Price       Int
     CreatedAt   DateTime @default(now())
-    Admin       Users    @relation(fields: [CreatedBy], references: [Email])
+    Admin       Users    @relation(fields: [CreatedBy], references: [Email], onDelete: Cascade, onUpdate: Cascade)
     CreatedBy   String
     Cart        Cart[]
     Purchases   Purchases[]
@@ -69,16 +69,16 @@ model Brands {
   Name         String   @id @db.VarChar(50)
   BrandDetails String   @db.VarChar(255)
   CreatedAt    DateTime @default(now())
-  Admin        Users    @relation(fields: [CreatedBy], references: [Email])
+  Admin        Users    @relation(fields: [CreatedBy], references: [Email], onDelete: Cascade, onUpdate: Cascade)
   CreatedBy    String
   Products     Products[]
 }
 
 model Comments {
   Id        Int      @id @default(autoincrement())
-  Product   Products @relation(fields: [ProductId], references: [Id])
+  Product   Products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
   ProductId Int
-  User      Users    @relation(fields: [UserEmail], references: [Email])
+  User      Users    @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
   UserEmail String
   Date      DateTime @default(now())
   Text      String   @db.VarChar(1000)
@@ -87,11 +87,11 @@ model Comments {
 
 model Votes {
   Id        Int      @id @default(autoincrement())
-  User      Users    @relation(fields: [UserEmail], references: [Email])
+  User      Users    @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
   UserEmail String
-  Products  Products @relation(fields: [ProductId], references: [Id])
+  Products  Products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
   ProductId Int
-  Comment   Comments @relation(fields: [CommentId], references: [Id])
+  Comment   Comments @relation(fields: [CommentId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
   CommentId Int
   Type      VoteType
 }
