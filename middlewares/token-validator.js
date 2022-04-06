@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
+const roles = ["SUPER_ADMIN", "ADMIN"];
 exports.registerAdmin = (req, res, next) => {
 
     const token = req.header("x-admin-token");
@@ -36,7 +36,7 @@ exports.cms = (req, res, next) => {
     try {
 
         const verified = jwt.verify(token, config.get("jwtPrivateKey"));
-        if (verified.role === "SUPER_ADMIN" || verified.role === "ADMIN") {
+        if (roles.includes(verified.role)) {
 
             checkUser(verified.email)
                 .then(count => {
@@ -44,8 +44,14 @@ exports.cms = (req, res, next) => {
                         return res.status(400).json("User not found...");
                     }
                     else {
-                        req.email = verified.email;
-                        return next();
+                        checkRole(verified.email).then(data => {
+                            if (roles.includes(data.Role)) {
+                                req.email = verified.email;
+                                return next();
+                            }
+                            else
+                                return res.status(403).json("Not allowed...");
+                        });
                     }
                 });
         }
@@ -86,12 +92,21 @@ exports.hasToken = (req, res, next) => {
 
 };
 
-const checkUser = async (email) => {
-  return await prisma.users.count({
+const checkUser = (email) => {
+  return prisma.users.count({
       where: {
           Email: email
       }
-  }).then(data => {
-      return data
+  });
+};
+
+const checkRole = (email) => {
+  return prisma.users.findUnique({
+      where: {
+          Email: email
+      },
+      select: {
+          Role: true
+      }
   });
 };
