@@ -54,6 +54,8 @@ router.post("/login", validate(validator.login), async (req, res) => {
         return res.header("x-auth-token", token).json("Logged in!");
     }
     else {
+        if (user.data === null)
+            return res.status(400).json("User not found...");
         return res.status(400).json("Error occurred...")
     }
 });
