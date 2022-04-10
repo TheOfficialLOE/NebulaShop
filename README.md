@@ -26,7 +26,6 @@ Routes under _cms_ directory handle Admin Panel operations( only admins and supe
 * [Add new product](https://github.com/TheOfficialLOE/NebulaShop#add-new-product)
 
 
-### More features will be added to CMS soon...
 
 ## Workflow
 
