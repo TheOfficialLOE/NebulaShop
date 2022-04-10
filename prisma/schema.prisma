@@ -75,13 +75,14 @@ model Brands {
 }
 
 model Comments {
-  Id        Int      @id @default(autoincrement())
-  Product   Products @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
-  ProductId Int
-  User      Users    @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
-  UserEmail String
-  Date      DateTime @default(now())
-  Text      String   @db.VarChar(1000)
+  Id        Int          @id @default(autoincrement())
+  Product   Products     @relation(fields: [ProductId], references: [Id], onDelete: Cascade, onUpdate: Cascade)
+  ProductId Int    
+  User      Users        @relation(fields: [UserEmail], references: [Email], onDelete: Cascade, onUpdate: Cascade)
+  UserEmail String     
+  Date      DateTime     @default(now())
+  Text      String       @db.VarChar(1000)
+  Stage     CommentStage @default(Proccessing)
   Votes     Votes[]
 }
 
@@ -105,4 +106,10 @@ enum Role {
 enum VoteType {
   LIKE
   DISLIKE
+}
+
+enum CommentStage {
+  Proccessing
+  Rejected
+  Accepted
 }

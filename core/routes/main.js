@@ -85,6 +85,9 @@ router.get("/:brand/:product", async (req, res) => {
         Info: true,
         Price: true,
         Comments: {
+          where: {
+              Stage: "Accepted"
+          },  
           select: {
               UserEmail: true,
               Text: true,
