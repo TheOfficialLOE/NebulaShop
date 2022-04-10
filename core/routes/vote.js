@@ -13,6 +13,8 @@ router.post("/:product/:comment", hasToken, async (req, res) => {
     while my current implementation takes something around 4 (just reading) ms to 50 ms (writing).
 */
 
+    // todo: user can only vote to accepted comments by admins
+
     if (req.query.type !== "like" && req.query.type !== "dislike")
         return res.status(400).json("Unknown action...")
 
