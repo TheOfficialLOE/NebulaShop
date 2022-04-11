@@ -1,5 +1,8 @@
 # Scalable E-commerce API!
 
+
+Important: I'm adding new features and changing some logic so the following may be incorrect about the code.
+
 Using this API you can basically fit any kind of product to sell, that's how it's designed to work.
 <br/>
 
