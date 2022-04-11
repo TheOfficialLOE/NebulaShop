@@ -10,13 +10,26 @@ const validate = require("../../models/comment-model");
 
 router.post("/new", [hasToken, valid(validate)], async (req, res) => {
 
+    const blackList = ["somethingOffensive"];
+    const textSubStr = req.body.Text.split(" ");
+    let stage = "PROCESSING";
+    textSubStr.some(value => {
+        if (blackList.includes(value.toLowerCase())) {
+            stage = "REJECTED";
+        }
+    });
+
     const comment = await create(prisma.comments, {
         ProductId: req.body.ProductId,
         UserEmail: req.email,
-        Text: req.body.Text
+        Text: req.body.Text,
+        Stage: stage
     });
 
     if (comment.success) {
+
+        if (stage === "REJECTED")
+            return res.status(400).json("Disapproval...");
 
         comment.data = _.pick(comment.data, ["ProductId", "Date", "Text"]);
 

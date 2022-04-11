@@ -82,7 +82,7 @@ model Comments {
   UserEmail String     
   Date      DateTime     @default(now())
   Text      String       @db.VarChar(1000)
-  Stage     CommentStage @default(Proccessing)
+  Stage     CommentStage @default(PROCESSING)
   Votes     Votes[]
 }
 
@@ -109,7 +109,7 @@ enum VoteType {
 }
 
 enum CommentStage {
-  Proccessing
-  Rejected
-  Accepted
+  PROCESSING
+  REJECTED
+  ACCEPTED
 }
