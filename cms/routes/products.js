@@ -6,6 +6,7 @@ const validator = require("../../models/products-model");
 const { createBrand, createProduct } = require("./controller/products-controller");
 const catchError = require("../../utilities/error-handler");
 
+// todo: find a better name for joi validators
 
 router.post("/newProduct", [cms, valid(validator.product)], catchError(createProduct));
 
