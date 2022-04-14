@@ -3,110 +3,18 @@ const router = express.Router();
 const { PrismaClient }= require("@prisma/client");
 const prisma = new PrismaClient();
 const { findMany, findFirst } = require("../../utilities/query-builder");
+const catchError = require("../../utilities/error-handler");
+const { getAllProducts, search, getAllByBrand, getSpecificProduct } = require("../controllers/main-controller");
 
 // todo: Add discount for products
 // todo: add admin checker middlewares in startup routes
 
-router.get("/", async (req, res) => {
+router.get("/", catchError(getAllProducts));
 
-    const products = await findMany(prisma.products, {}, {
-        BrandName: true,
-        Name: true
-    });
+router.get("/search", catchError(search));
 
-    if (products.success)
-        return res.json(products);
-    else
-        return res.status(400).json("Error occurred...");
+router.get("/:brand", catchError(getAllByBrand));
 
-});
-
-router.get("/search", async (req, res) => {
-
-    if (req.query.query === undefined)
-        return res.status(400).json("Please enter a search query....");
-
-
-    const items = await findMany(prisma.products, {
-        Name: {
-            contains: req.query.query
-        },
-        BrandName: {
-            contains: req.body.Brand || undefined
-        },
-        Price: {
-            gte: req.body.MinPrice || undefined,
-            lte: req.body.MaxPrice || undefined
-        }
-    }, {
-        BrandName: true,
-        Name: true,
-        Price: true,
-    });
-
-    if (items.success)
-        return res.json(items);
-    else
-        return res.status(400).json("Error occurred...");
-
-
-});
-
-router.get("/:brand", async (req, res) => {
-
-    const products = await findMany(prisma.products, {
-        BrandName: req.params.brand
-    }, {
-        BrandName: true,
-        Name: true,
-        Price: true
-    });
-
-    if (products.success) {
-        if (products.data.length !== 0)
-            return res.json(products);
-        else
-            return res.status(400).json("Brand not found...")
-    }
-    else
-        return res.status(400).json("Error occurred...");
-
-});
-
-router.get("/:brand/:product", async (req, res) => {
-
-    const product = await findFirst(prisma.products, {
-        Id: Number(req.params.product),
-        BrandName: req.params.brand
-    }, {
-        BrandName: true,
-        Name: true,
-        Description: true,
-        Info: true,
-        Price: true,
-        Comments: {
-          where: {
-              Stage: "Accepted"
-          },  
-          select: {
-              UserEmail: true,
-              Text: true,
-              Votes: {
-                  select: {
-                      UserEmail: true,
-                      Type: true
-                  }
-              }
-          }
-        }
-    });
-
-    if (product.success)
-        return res.json(product);
-    else
-        return res.status(400).json("Error occurred...");
-
-
-});
+router.get("/:brand/:product", catchError(getSpecificProduct));
 
 module.exports = router;
