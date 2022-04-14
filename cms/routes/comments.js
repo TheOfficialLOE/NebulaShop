@@ -10,5 +10,6 @@ router.get("/", cms, catchError(getAllComments));
 
 router.post("/check", [cms, valid(validator)], catchError(checkComment));
 
+// todo: Add more CRUD to this part and related parts.
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const MyPrismaException = require("../../../utilities/MyPrismaException");
 
 module.exports.getAllComments = async (req, res) => {
 
@@ -12,8 +13,6 @@ module.exports.getAllComments = async (req, res) => {
             Votes: true,
             Stage: true
         }
-    }).catch(err => {
-        throw { code: 400, message: "Error occurred..." };
     });
 
     return res.json(comments);
@@ -31,8 +30,7 @@ module.exports.checkComment = async (req, res) => {
         }
     }).catch(err => {
         if (err.code === "P2025")
-            throw { code: 400, message: "Comment not found..." };
-        throw { code: 400, message: "Error occurred..." };
+            throw new MyPrismaException(400, "Comment not found...");
     });
 
     return res.json(check);

@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient;
-
-// todo: don't pass throw { code: 400, message: "Error occurred..." } every single time.
+const MyPrismaException = require("../../../utilities/MyPrismaException");
 
 module.exports.createBrand = async (req, res) => {
 
@@ -16,10 +15,9 @@ module.exports.createBrand = async (req, res) => {
         }
     }).catch(err => {
         if (err.code === "P2002")
-            throw { code: 400, message: "Brand already exists..." };
+            throw new MyPrismaException(400, "Brand already exists...");
         else if (err.code === "P2003")
-            throw { code: 403, message: "User not found..." };
-        throw { code: 400, message: "Error occurred..." };
+            throw new MyPrismaException(403, "User not found...");
     });
 
     return res.json(brand);
@@ -44,8 +42,7 @@ module.exports.createProduct = async (req, res) => {
         }
     }).catch(err => {
         if (err.code === "P2003")
-            throw { code: 400, message: "Brand not found" };
-        throw { code: 400, message: "Error occurred..." };
+            throw new MyPrismaException(400, "Brand not found");
     });
 
     return res.json(product);
