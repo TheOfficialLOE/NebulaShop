@@ -1,8 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const { PrismaClient }= require("@prisma/client");
-const prisma = new PrismaClient();
-const { findMany, findFirst } = require("../../utilities/query-builder");
 const catchError = require("../../utilities/error-handler");
 const { getAllProducts, search, getAllByBrand, getSpecificProduct } = require("../controllers/main-controller");
 

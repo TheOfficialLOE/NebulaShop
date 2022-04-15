@@ -3,7 +3,7 @@ const router = express.Router();
 const { cms } = require("../../middlewares/token-validator");
 const valid = require("../../middlewares/joi-validator");
 const validator = require("../../models/products-model");
-const { createBrand, createProduct } = require("./controller/products-controller");
+const { createBrand, createProduct } = require("./controllers/products-controller");
 const catchError = require("../../utilities/error-handler");
 
 // todo: find a better name for joi validators
